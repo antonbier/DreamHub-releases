@@ -18,6 +18,7 @@ A web app and companion for your Dreambox: recordings, timers, the TV guide, int
    scp -O dreamhub_0.12.1_arm64.deb root@<box IP>:/tmp/
    ssh root@<box IP> 'dpkg -i /tmp/dreamhub_0.12.1_arm64.deb'
    ```
+   If `dpkg` complains about a missing package (DreamHub needs `ffmpeg`), run `apt-get update && apt-get -f install` — it fetches what is missing and finishes the installation.
 3. Open `http://<box IP>:8765` in a browser and follow the first-steps assistant.
 
 Installing never restarts enigma2: the TV launcher plugin loads at the next restart (`systemctl restart enigma2`) when it suits you; DreamHub itself works in the browser at once.
