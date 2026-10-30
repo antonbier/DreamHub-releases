@@ -36,6 +36,10 @@ Installing never restarts enigma2: the TV launcher plugin loads at the next rest
 - **Docker apps** (Apps → Docker) are a **beta**: simple containers work; fixed ports, mounting folders and some compose files are still limited.
 - Everything stays in your network. DreamHub talks to outside services (TV guide data, cover art, the optional AI assistant) only when you switch those on.
 
+## About
+
+DreamHub is an independent hobby project — **not made by or affiliated with Dream Multimedia** or any of the makers whose names appear here. It was written with the help of an AI assistant (Claude) and checked by hand on real boxes. The source code is **closed for now**; bug reports and ideas are very welcome. The software and data it builds on are listed in [THIRD_PARTY.md](THIRD_PARTY.md) (TMDB, fanart.tv and others are used only if you switch them on, with your own key).
+
 ## Feedback
 
 Questions and problems: open an [issue](../../issues) here. Say which box and which version (Settings → Box admin → Device shows it). Tried it on another box? Tell us what worked — it helps everyone.
