@@ -1,17 +1,17 @@
 Package: dreamhub
 Version: 0.12.1
 Architecture: armhf
-Maintainer: Armin Mair <arminmair@hotmail.com>
+Maintainer: DreamHub <antonbier@users.noreply.github.com>
 Installed-Size: 32128
 Depends: ffmpeg
 Filename: ./dreamhub_0.12.1_armhf.deb
-Size: 9776404
-MD5sum: 86cdd0e973802240942022c96f33767e
-SHA1: b937997727e4201d3eb1123e6b4174564dd7500d
-SHA256: 0bde889558ac5e2114badebd985aeb3852f6fdfef7614667e0026723c8242bb7
+Size: 9776320
+MD5sum: cfc06a54bf83a75923f785c73555ae7f
+SHA1: 6c713801c75353403a1c34ff00f1e825db6f2b19
+SHA256: 39255a9e48cba92a69e413a151f6afd451b2baff017a42531cff20da9d10842f
 Section: web
 Priority: optional
-Homepage: https://github.com/antonbier/DreamHub
+Homepage: https://github.com/antonbier/DreamHub-releases
 Description: Modern web control for Dreambox receivers running DreamOS
  DreamHub is a Go backend plus web UI that modernizes the native
  WebControl interface of a Dreambox (Enigma2/DreamOS satellite
