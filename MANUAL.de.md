@@ -25,9 +25,9 @@ DreamHub ändert von sich aus nichts: Jede Änderung an Aufnahmen, Timern oder E
 ### Aktuell: Manuelle Installation des Pakets
 <!-- help: install-manual -->
 
-Am einfachsten geht es über den **Paket-Feed** von DreamHub (siehe unten *Über den Feed*): einmal eintragen, danach funktionieren Installation und Updates wie bei jedem anderen Plugin. Wenn du magst, installierst du das `.deb`-Paket direkt, wie hier beschrieben.
+Da es noch keinen Paket-Feed gibt (siehe unten *Später: Über einen Feed*), wird das `.deb`-Paket vorerst direkt installiert.
 
-1. **Lade das Paket** für deine Box aus dem neuesten Release herunter: [github.com/antonbier/DreamHub-releases/releases](https://github.com/antonbier/DreamHub-releases/releases) – `…_arm64.deb` für eine Dreambox One/Two, `…_armhf.deb` für eine DM900/DM920.
+1. **Lade das Paket** für deine Box aus dem neuesten Release herunter: [github.com/antonbier/DreamHub-releases/releases](https://github.com/antonbier/DreamHub-releases/releases) – `…_arm64.deb` für eine Dreambox One/Two, `…_armhf.deb` für eine DM900/DM920. (Zwischen-Builds jeder Änderung findest du im Repository unter dem Tab **Actions**, Artefakt **`dreamhub-deb`**, für jeden, der bei GitHub angemeldet ist.)
 2. **Kopiere es auf die Box**, zum Beispiel nach `/tmp/` – über die Netzwerkfreigabe der Box (Samba), mit einem SCP-Programm wie WinSCP oder Cyberduck (Benutzer `root`) oder von einem USB-Stick.
 3. **Installiere es.** Öffne ein Terminal (Shell) auf der Box. Es ist kein SSH-Client erforderlich: Das eigene **WebAdmin** der Box bietet ein Terminal im Browser unter `http://<box>/webadmin/terminal/` (Anmeldung als `root`). Führe dann aus:
 ```sh
@@ -41,19 +41,10 @@ Falls Pakete fehlen, hole sie mit `apt-get -f install` nach.
 Dadurch wird der DreamHub-Dienst installiert und gestartet sowie das **DreamHub**-Plugin zur Plugin-Liste des TVs hinzugefügt. Die Benutzeroberfläche des TVs (enigma2) wird bei der Installation **nie neu gestartet**: Das Plugin erscheint beim nächsten Neustart von enigma2 (die Meldung am Ende der Installation weist darauf hin), den du machst, wenn es dir passt – DreamHub selbst läuft sofort im Browser.
 4. **Überprüfe es:** Öffne DreamHub (nächster Abschnitt), gehe dann zu **Gerät → Diagnose → Selbsttest ausführen**. Es fragt die Box nach allem ab, was DreamHub benötigt, und sollte durchgehend grün anzeigen.
 
-### Über den Feed
+### Später: Über einen Feed
 <!-- help: install-feed -->
 
-DreamHub hat einen eigenen Paket-Feed, damit Installation und Updates ohne Kopieren von Dateien gehen. Trage ihn einmal ein, in der Shell der Box (das Terminal im WebAdmin genügt), für eine Dreambox One/Two:
-
-```sh
-echo "deb [trusted=yes] https://antonbier.github.io/DreamHub-releases/apt/arm64 ./" > /etc/apt/sources.list.d/dreamhub.list
-apt-get update && apt-get install dreamhub
-```
-
-Für eine DM900/DM920 nimmst du `armhf` statt `arm64` in der Adresse. Statt der Shell kannst du auch im WebAdmin unter der Feed-Verwaltung (**„Neues \*-feed.list hochladen“**) eine Datei `dreamhub-feed.list` mit dieser einen Zeile hochladen und `dreamhub` dann wie jedes andere Plugin installieren. Der Feed ist nicht signiert (`[trusted=yes]`, wie die anderen Dreambox-Plugin-Feeds): Du vertraust der Adresse, trage sie also nur aus diesem Handbuch ein. `apt` holt fehlende Pakete (etwa `ffmpeg`) selbst.
-
-Sobald der Feed eingetragen ist, zeigt **Apps → Pakete** in DreamHub, wenn es eine neue Version gibt, und aktualisiert sie nach einer Vorschau.
+Sobald DreamHub in einem eigenen Paket-Feed veröffentlicht wird, funktionieren Installation und Updates ohne manuelles Kopieren von Dateien: Nutze in der Feed-Verwaltung von WebAdmin **„Neues *-feed.list hochladen“**, um die Feed-Datei von DreamHub hinzuzufügen, und installiere `dreamhub` dann wie jedes andere Plugin. Dieses Handbuch wird die Feed-Datei nennen, sobald sie existiert.
 
 ### Aktualisieren
 <!-- help: updating -->
