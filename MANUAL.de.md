@@ -46,6 +46,19 @@ Dadurch wird der DreamHub-Dienst installiert und gestartet sowie das **DreamHub*
 
 Sobald DreamHub in einem eigenen Paket-Feed veröffentlicht wird, funktionieren Installation und Updates ohne manuelles Kopieren von Dateien: Nutze in der Feed-Verwaltung von WebAdmin **„Neues *-feed.list hochladen“**, um die Feed-Datei von DreamHub hinzuzufügen, und installiere `dreamhub` dann wie jedes andere Plugin. Dieses Handbuch wird die Feed-Datei nennen, sobald sie existiert.
 
+### Auf einem Raspberry Pi oder Server
+<!-- help: install-server -->
+
+DreamHub muss nicht auf der Box laufen. Auf einem Raspberry Pi (Pi 3, 4 oder 5 mit Raspberry Pi OS), einem Mini-PC oder einem Heimserver mit Debian oder Ubuntu installierst du stattdessen **`dreamhub-server`**, und es steuert die Dreambox über das Netzwerk.
+
+1. Lade `dreamhub-server_<Version>_<Architektur>.deb` herunter – `arm64` (Pi mit 64-Bit-System), `armhf` (32-Bit-Pi-OS) oder `amd64` (normaler PC) – und installiere es: `sudo apt install ./dreamhub-server_*.deb` (es bringt `ffmpeg` mit).
+2. Sage ihm, mit welcher Box es sprechen soll: `sudo dreamhub-setup 192.168.1.50` (die Adresse deiner Dreambox). Es sieht sich die Box zuerst an und schreibt nichts, wenn die Adresse nicht wie eine Dreambox antwortet.
+3. Öffne `http://<dieser Rechner>:8765` im Browser.
+
+DreamHub **liest** zunächst nur. Damit es Dinge auf der Box ändern darf (Timer, Senderlisten – jede Änderung zeigt weiter zuerst eine Vorschau), führe `sudo dreamhub-setup 192.168.1.50 --writes` aus.
+
+**Was auf diesem Weg fehlt:** alles, wofür DreamHub auf der Box selbst laufen muss – Aufnahmen umbenennen, verschieben und löschen, die Picon-Ordner der Box, ihre Dienste und die Docker-Apps. Der Selbsttest zeigt diese Zeilen als Warnungen. Wenn du sie brauchst, installiere zusätzlich das normale Paket `dreamhub` auf der Box und koppele beide (siehe *Mehr als eine Box*). Das Server-Paket ersetzt das Box-Paket: Installiere nicht beide auf demselben Rechner.
+
 ### Aktualisieren
 <!-- help: updating -->
 

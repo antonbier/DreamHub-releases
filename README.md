@@ -23,6 +23,8 @@ A web app and companion for your Dreambox: recordings, timers, the TV guide, int
 
 Installing never restarts enigma2: the TV launcher plugin loads at the next restart (`systemctl restart enigma2`) when it suits you; DreamHub itself works in the browser at once.
 
+- **Raspberry Pi, mini PC, server:** DreamHub can also run off the box — see [SERVER.md](SERVER.md) (preview, untested on real hardware).
+
 ## Update and go back
 
 - **Update:** install the newer `.deb` the same way; only the DreamHub service restarts.

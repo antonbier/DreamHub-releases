@@ -43,6 +43,19 @@ There is no package feed to subscribe to yet (see *Later: from a feed* below), s
 
 Once DreamHub is published in its own package feed, installing and updating will work without copying files: in WebAdmin's feed management, use **"Upload new \*-feed.list"** to add DreamHub's feed file, then install `dreamhub` like any other plugin. This guide will name the feed file when it exists.
 
+### On a Raspberry Pi or a server
+<!-- help: install-server -->
+
+DreamHub does not have to run on the box. On a Raspberry Pi (Pi 3, 4 or 5 with Raspberry Pi OS), a mini PC or a home server running Debian or Ubuntu you install **`dreamhub-server`** instead, and it controls the Dreambox over the network.
+
+1. Download `dreamhub-server_<version>_<arch>.deb` — `arm64` (Pi with a 64-bit system), `armhf` (32-bit Pi OS) or `amd64` (a normal PC) — and install it: `sudo apt install ./dreamhub-server_*.deb` (it brings `ffmpeg` along).
+2. Tell it which box to talk to: `sudo dreamhub-setup 192.168.1.50` (your Dreambox's address). It looks at the box first and writes nothing if the address does not answer like a Dreambox.
+3. Open `http://<this machine>:8765` in a browser.
+
+DreamHub only **reads** at first. To let it change things on the box (timers, channel lists — each change still shows a preview first) run `sudo dreamhub-setup 192.168.1.50 --writes`.
+
+**What is missing this way:** everything that needs DreamHub on the box itself — renaming, moving and deleting recordings, the box's picon folders, its services and the Docker apps. The self-test shows those lines as warnings. If you want them, install the normal `dreamhub` package on the box too and pair the two (see *More than one box*). The server package replaces the box package: do not install both on the same machine.
+
 ### Updating
 <!-- help: updating -->
 
