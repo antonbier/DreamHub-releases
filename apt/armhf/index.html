@@ -1,0 +1,7 @@
+<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>DreamHub apt feed</title>
+<h1>DreamHub apt feed</h1>
+<p>This is not a web page: it is the package feed for a Dreambox, read by <code>apt</code>. Nothing to see here.</p>
+<p>To use it, on the box (Dreambox One/Two: <code>arm64</code>; DM900/DM920: <code>armhf</code>):</p>
+<pre>echo "deb [trusted=yes] https://antonbier.github.io/DreamHub-releases/apt/armhf ./" > /etc/apt/sources.list.d/dreamhub.list
+apt-get update &amp;&amp; apt-get install dreamhub</pre>
+<p>The feed is not signed, like the other Dreambox plugin feeds: add only this address. More in <a href="https://github.com/antonbier/DreamHub-releases#install">the README</a>, the packages and release notes are on the <a href="https://github.com/antonbier/DreamHub-releases/releases">releases page</a>.</p>
