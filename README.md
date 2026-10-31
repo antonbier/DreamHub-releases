@@ -2,7 +2,7 @@
 
 A web app and companion for your Dreambox: recordings, timers, the TV guide, internet channels (IPTV), series, an assistant — in the browser on your phone, tablet or computer, in your home network.
 
-**Current release: 0.12.1** — packages are attached to the [latest release](../../releases/latest). The manual is [MANUAL.md](MANUAL.md) (English) and [MANUAL.de.md](MANUAL.de.md) (Deutsch).
+**Current release: 0.13.0** — packages are attached to the [latest release](../../releases/latest). The manual is [MANUAL.md](MANUAL.md) (English) and [MANUAL.de.md](MANUAL.de.md) (Deutsch).
 
 ## What you need
 
@@ -12,22 +12,28 @@ A web app and companion for your Dreambox: recordings, timers, the TV guide, int
 
 ## Install
 
-1. Download `dreamhub_0.12.1_arm64.deb` from the [latest release](../../releases/latest) (`armhf` for a DM900 / DM920 UHD).
-2. Copy it to the box and install it:
-   ```sh
-   scp -O dreamhub_0.12.1_arm64.deb root@<box IP>:/tmp/
-   ssh root@<box IP> 'dpkg -i /tmp/dreamhub_0.12.1_arm64.deb'
-   ```
-   If `dpkg` complains about a missing package (DreamHub needs `ffmpeg`), run `apt-get update && apt-get -f install` — it fetches what is missing and finishes the installation.
-3. Open `http://<box IP>:8765` in a browser and follow the first-steps assistant.
+**The easy way — the package feed** (on the box's shell; WebAdmin's terminal does):
+
+```sh
+echo "deb [trusted=yes] https://antonbier.github.io/DreamHub-releases/apt/arm64 ./" > /etc/apt/sources.list.d/dreamhub.list
+apt-get update && apt-get install dreamhub
+```
+
+(DM900 / DM920 UHD: `armhf` instead of `arm64` in the address.) `apt` fetches what is missing, e.g. `ffmpeg`. (The package adds this feed by itself the first time it is installed, so a box that got DreamHub by hand updates from it too.) Then open `http://<box IP>:8765` and follow the first-steps assistant. The feed is not signed (`[trusted=yes]`, like the other Dreambox plugin feeds), so add only this address.
+
+**Or by hand:** download `dreamhub_0.13.0_arm64.deb` (`armhf` for a DM900 / DM920 UHD) from the [latest release](../../releases/latest), copy it to the box and run `dpkg -i`; if `dpkg` complains about a missing package (DreamHub needs `ffmpeg`), `apt-get update && apt-get -f install` finishes it.
 
 Installing never restarts enigma2: the TV launcher plugin loads at the next restart (`systemctl restart enigma2`) when it suits you; DreamHub itself works in the browser at once.
+
+## On a Raspberry Pi or a server
+
+DreamHub does not have to run on the box: install **`dreamhub-server`** (`arm64` / `armhf` for a Raspberry Pi, `amd64` for a normal PC with Debian or Ubuntu) with `sudo apt install ./dreamhub-server_*.deb`, then `sudo dreamhub-setup <box address>`. It controls the Dreambox over the network. What needs DreamHub on the box itself (renaming and moving recordings, picon folders, services, Docker apps) is not available this way. Details in the [manual](MANUAL.md).
 
 - **Raspberry Pi, mini PC, server:** DreamHub can also run off the box — see [SERVER.md](SERVER.md) (preview, untested on real hardware).
 
 ## Update and go back
 
-- **Update:** install the newer `.deb` the same way; only the DreamHub service restarts.
+- **Update:** in DreamHub itself — **Settings → System → About DreamHub** shows a newer version and what is new in it, and installs it after a preview (DreamHub restarts for about half a minute; the page reloads by itself). With the feed also `apt-get update && apt-get upgrade`, or **Apps → Packages**. By hand: install the newer `.deb` the same way. Only the DreamHub service restarts, never enigma2.
 - **Go back:** keep the previous `.deb`; installing it again puts the old version back. Before an update, copy `/usr/bin/dreamhub` and `/data/dreamhub/dreamhub.db` somewhere safe if you want a way back that includes your data.
 - **Remove:** `dpkg -r dreamhub` keeps your data, `dpkg -P dreamhub` removes it.
 
