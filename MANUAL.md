@@ -23,9 +23,9 @@ DreamHub changes nothing on its own: every change to recordings, timers or setti
 ### Today: install the package by hand
 <!-- help: install-manual -->
 
-There is no package feed to subscribe to yet (see *Later: from a feed* below), so for now the `.deb` package is installed directly.
+The easiest way is DreamHub's **package feed** (see *From the feed* below): add it once, and installing and updating work like any other plugin. If you prefer, install the `.deb` package directly, as described here.
 
-1. **Get the package** for your box from the latest release: [github.com/antonbier/DreamHub-releases/releases](https://github.com/antonbier/DreamHub-releases/releases) — `…_arm64.deb` for a Dreambox One/Two, `…_armhf.deb` for a DM900/DM920. (In-between builds of every change are on the repository's **Actions** tab, artifact **`dreamhub-deb`**, for anyone signed in to GitHub.)
+1. **Get the package** for your box from the latest release: [github.com/antonbier/DreamHub-releases/releases](https://github.com/antonbier/DreamHub-releases/releases) — `…_arm64.deb` for a Dreambox One/Two, `…_armhf.deb` for a DM900/DM920.
 2. **Copy it to the box**, for example to `/tmp/` — over the box's network share (Samba), with an SCP program such as WinSCP or Cyberduck (user `root`), or from a USB stick.
 3. **Install it.** Open a shell on the box. No SSH client is needed: the box's own **WebAdmin** has a terminal in the browser at `http://<box>/webadmin/terminal/` (log in as `root`). Then run:
 
@@ -38,10 +38,19 @@ There is no package feed to subscribe to yet (see *Later: from a feed* below), s
    This installs the DreamHub service and starts it, and adds the **DreamHub** plugin to the TV's plugin list. The TV's interface (enigma2) is **never restarted** by the installation: the plugin appears at the next restart of enigma2 (the message at the end of the installation says so), which you do when it suits you — DreamHub itself works in the browser right away.
 4. **Check it:** open DreamHub (next section), then **Box admin → Diagnostics → Run self-test**. It asks the box everything DreamHub needs and should come back all green.
 
-### Later: from a feed
+### From the feed
 <!-- help: install-feed -->
 
-Once DreamHub is published in its own package feed, installing and updating will work without copying files: in WebAdmin's feed management, use **"Upload new \*-feed.list"** to add DreamHub's feed file, then install `dreamhub` like any other plugin. This guide will name the feed file when it exists.
+DreamHub has its own package feed for the **box package** (`dreamhub`; the server package is installed from its file, see below), so installing and updating work without copying files. **From version 0.13.0 the package adds it by itself** on its first install (`/etc/apt/sources.list.d/dreamhub-feed.list`, said in the install output); a feed you added yourself is left alone, and one you remove or switch off is not added again. To install DreamHub from the feed in the first place, add it once — on the box's shell (WebAdmin's terminal does), for a Dreambox One/Two:
+
+```sh
+echo "deb [trusted=yes] https://antonbier.github.io/DreamHub-releases/apt/arm64 ./" > /etc/apt/sources.list.d/dreamhub.list
+apt-get update && apt-get install dreamhub
+```
+
+For a DM900/DM920 use `armhf` instead of `arm64` in the address. Instead of the shell you can also upload a file called `dreamhub-feed.list` with that one line in WebAdmin's feed management (**"Upload new \*-feed.list"**) and then install `dreamhub` like any other plugin. The feed is not signed (`[trusted=yes]`, like the other Dreambox plugin feeds): you trust the address, so only add it from this guide. `apt` fetches missing packages (such as `ffmpeg`) by itself.
+
+Once the feed is added, DreamHub finds a new version of itself there (see *Updating*).
 
 ### On a Raspberry Pi or a server
 <!-- help: install-server -->
@@ -59,7 +68,9 @@ DreamHub only **reads** at first. To let it change things on the box (timers, ch
 ### Updating
 <!-- help: updating -->
 
-Install the newer `.deb` the same way (`dpkg -i …`). Your settings, keys and dashboard are kept: they live in `/data/dreamhub`, which an update never touches.
+**From DreamHub itself:** **Settings → System → About DreamHub** shows whether a newer version is out, with **What's new?** (the list of changes, in English) and **Install update…**. It looks twice a day and puts a new version into the notifications once; **Check now** asks at once. The update is a preview like every change; after you confirm, DreamHub downloads the new package, installs it and restarts — the page waits for it and reloads by itself (about half a minute; TV and recordings carry on). It comes from the DreamHub feed when the box has it, otherwise from the release on GitHub, checked against its published checksum before anything is installed. (The checksum catches a damaged download; like the feed, which is not signed, it rests on trusting the `DreamHub-releases` repository — the same trust as installing the `.deb` by hand.) Afterwards the card says it was updated, and if the TV plugin changed, that it loads at the next enigma2 restart. If an install fails, the card says so with the end of its output, and the previous version keeps running. The box needs internet for this, and device writes switched on (on a server: `dreamhub-setup … --writes`).
+
+**By hand:** install the newer `.deb` the same way (`dpkg -i …`), or `apt-get update && apt-get install dreamhub` with the feed. Your settings, keys and dashboard are kept: they live in `/data/dreamhub`, which an update never touches.
 
 ### Uninstalling
 <!-- help: uninstalling -->
@@ -336,7 +347,7 @@ The page has three tabs in a fixed order — **System software**, **Extensions**
 
 **Add container** (above the list, admins only) is for anything that isn't in the list: paste a **compose file** (`docker-compose.yml`), type an **image name**, or paste an **Unraid template** (the XML; DreamHub bundles no templates and downloads nothing — it only reads the ports, folders and variables). You get the same form as for the list, built from the file: every `${NAME:-default}` in it becomes a field. What is understood: services with image, ports, volumes, environment, command, a memory limit, restart and depends_on; anything else (build, networks, secrets, …) is refused with a reason. Apps use the box's own network, so a port can't be mapped to another one — the app listens on its own port. A folder written `.` or `./name` is kept in the app's storage; any other folder must be below `/media`. **You are responsible for what you run**: DreamHub refuses a container any folder of the box's system (`/`, `/etc`, `/usr`, `/var`, `/boot`, `/proc`, `/sys`, `/dev`), DreamHub's own data, the Docker socket and other apps' data — also through links — and asks for an extra confirmation before it gives a container privileged mode, extra capabilities, devices or the box's process view; it cannot judge the software itself. Containers you added are edited and updated through **⋯** like the others, except ones added before editing existed (remove and add those again).
 
-**Updates.** When something can be updated, a box at the top of the page says how many packages and containers, with **Update all**. The preview lists everything in the order it runs: the containers one after the other, then the packages. Containers go first because an update that does not run goes back to the previous version by itself, so nothing else changes if one fails; the packages follow only when every container is fine. If a step fails, the rest is not started, and the result says what was done, what failed and what was not started. DreamHub itself is not part of it (a note says so); update it with the box's own tools. While a recording runs, or one starts within 15 minutes, nothing is updated: the box says "A recording is running … Updates are possible again at 21:15." **Automatic updates** are off by default: one switch for containers in Docker settings, one for packages in Package settings (only packages that do not restart enigma2); "Only update between" limits them to a time of day (pressing Update yourself is only held back by a recording). Their results appear in the notifications. In a container's **⋯** menu, **Update** updates that one and **Roll back** (shown while the previous version is kept) goes back; Docker settings list the kept versions and can remove them. In a package's menu, **Downgrade to …** appears only if the feed still has an older version. If an app keeps stopping, a notification links to its logs.
+**Updates.** When something can be updated, a box at the top of the page says how many packages and containers, with **Update all**. The preview lists everything in the order it runs: the containers one after the other, then the packages. Containers go first because an update that does not run goes back to the previous version by itself, so nothing else changes if one fails; the packages follow only when every container is fine. If a step fails, the rest is not started, and the result says what was done, what failed and what was not started. DreamHub itself is not part of it (a note says so); update it under **Settings → System → About DreamHub** (see *Updating*). While a recording runs, or one starts within 15 minutes, nothing is updated: the box says "A recording is running … Updates are possible again at 21:15." **Automatic updates** are off by default: one switch for containers in Docker settings, one for packages in Package settings (only packages that do not restart enigma2); "Only update between" limits them to a time of day (pressing Update yourself is only held back by a recording). Their results appear in the notifications. In a container's **⋯** menu, **Update** updates that one and **Roll back** (shown while the previous version is kept) goes back; Docker settings list the kept versions and can remove them. In a package's menu, **Downgrade to …** appears only if the feed still has an older version. If an app keeps stopping, a notification links to its logs.
 
 **Backup and bringing apps back.** *Settings → System → Backup & restore* can include your apps: tick the apps (and which of their folders) and download the backup, or choose **Save on the box** to keep it on the recording disk, which suits big app data. The apps part also holds the passwords DreamHub made for the apps, so keep the file safe. On a new box, restore the file; the apps then appear under *My containers* as **Apps you can bring back** with *Install again*. You see the usual preview and confirm it. An app you removed earlier is offered the same way.
 
