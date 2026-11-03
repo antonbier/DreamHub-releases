@@ -50,3 +50,29 @@ Description: Modern web control for Dreambox receivers running DreamOS
  lives in the web UI.
 X-Dreamhub-Category: self
 
+Package: dreamhub
+Version: 0.13.1
+Architecture: arm64
+Maintainer: DreamHub <antonbier@users.noreply.github.com>
+Installed-Size: 32064
+Depends: ffmpeg
+Filename: ./dreamhub_0.13.1_arm64.deb
+Size: 9761960
+MD5sum: 4cc3005d26a1836f2088569d7f602eda
+SHA1: 046fb36257cf1ac29f75815a9cf359f8d32a6dd8
+SHA256: 1b1cf0d2dc07facccce3239d8200e5bf903789398b436fa6c5768381805c023f
+Section: web
+Priority: optional
+Homepage: https://github.com/antonbier/DreamHub-releases
+Description: Modern web control for Dreambox receivers running DreamOS
+ DreamHub is a Go backend plus web UI that modernizes the native
+ WebControl interface of a Dreambox (Enigma2/DreamOS satellite
+ receiver): recordings, timers, the TV guide and AI recommendations,
+ usable from any browser on the LAN. Runs alongside WebControl on its
+ own port (8765) and never modifies it.
+ .
+ Includes a small Enigma2 launcher plugin: a QR code to open DreamHub
+ on a phone and a backend status check, nothing more — everything else
+ lives in the web UI.
+X-Dreamhub-Category: self
+
