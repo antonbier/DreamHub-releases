@@ -199,6 +199,7 @@ Every recording folder on the box, folder by folder.
 - **Select several** (or **Select all**) and:
   - **Rename by scheme** — names follow your scheme from *Settings → Recordings* (e.g. `{title} - S{season:02}E{episode:02} - {episodeTitle}`). With a TMDB key set, a film's missing year and an episode's title are filled in from TMDB by themselves. Tick **Sort into folders** to also move them into folders by your folder scheme (e.g. `{title}/Season {season:02}`); missing folders are created.
   - **Save covers** — writes the poster and backdrop next to recordings that have none, so the TV's own recording list and other plugins show them too (DreamHub shows posters without saving). Existing covers are never replaced.
+  - **Kodi files** — writes the `.nfo` files and artwork Kodi reads (`tvshow.nfo`, poster, backdrop, logo and season posters in the series folder, an `.nfo` per episode, a film's `.nfo` with its pictures), with the TMDB, TheTVDB and IMDb ids. Best after renaming by the scheme with folders; after a batch rename it is offered for the renamed recordings. Logos need a fanart.tv key. Existing files are never replaced.
   - **Move to trash** — nothing is deleted right away; the **Trash** tab restores or deletes for good.
 
 - **Cut by hand** — in a recording's details: name the parts to cut out (`m:ss`, from … to …), look at each boundary in the browser, preview, confirm. No ad detection needed; nothing is re-encoded (a cut can be off by up to a second) and the original goes to the trash, so you can restore it.
@@ -222,7 +223,7 @@ The films and series of your **Plex** server. Connect it under **Settings → Se
 ### Series
 <!-- help: series -->
 
-Your series from **SerienRecorder**. A series' page shows planned episodes, further broadcasts in the guide — each with its episode number and whether you're **missing** it — your recordings by season, and (with TVmaze, on by default) the full episode list with what's recorded, planned, missing or still to come. "Missing" is only shown when your recordings carry episode numbers like `S01E02`. Daily soaps that SerienRecorder numbers straight through (`S00E8622`) are matched by that number; only episodes from your first recording on count as missing. A broadcast shown on several regional channels at once (RTL's, for example) is listed once.
+Your series from **SerienRecorder**. A series' page shows planned episodes, further broadcasts in the guide — each with its episode number and whether you're **missing** it — your recordings by season, and (with TVmaze, on by default) the full episode list with what's recorded, planned, missing or still to come. "Missing" is only shown when your recordings carry episode numbers like `S01E02`. Daily soaps that SerienRecorder numbers straight through (`S00E8622`) are matched by that number; only episodes from your first recording on count as missing. A broadcast shown on several regional channels at once (RTL's, for example) is listed once. Administrators can open SerienRecorder's own web interface for markers, seasons and settings — in a new tab, or on the page itself while DreamHub is opened over plain `http://` (a browser does not show the box's http page inside the secure address).
 
 ### TV guide
 <!-- help: tv-guide -->
@@ -243,7 +244,11 @@ TV channels right in the browser — on the phone, tablet or PC, no app needed. 
 
 The box has one tuner: another channel only works while the TV and any recording are on the same frequency. Otherwise the picture says so — **Watch what the TV shows** always works. In the **TV guide**, a programme that's on now has **Watch in the browser** too, and **Home** can show a **Live TV** tile with your channels (switch it on under **Edit**). In **Recordings**, **Watch in the browser** plays a recording, with a bar to jump anywhere in it.
 
-Works in current Chrome, Edge, Firefox and Safari. HD channels use your device's own video decoder; older or very small devices may stutter on HD.
+Works in current Chrome, Edge, Firefox and Safari. HD channels use your device's own video decoder — but browsers allow that only on a secure page (HTTPS). Opened over plain `http://<box-IP>:8765`, HD is decoded in software, which most computers cannot keep up with: the picture stutters while the sound keeps playing, and the player says so. Standard-definition channels are not affected.
+
+**Open in player.** While a live channel plays, **Open in player** downloads a small playlist (`.m3u`) that points straight at the box's own stream (port 8001); opened with VLC, IINA or any player that reads playlists, it plays the channel without the browser — smooth in HD. It works where your device reaches the box directly (at home, or over a VPN); DreamHub is not in the path, so nothing is checked or logged there, and if the box's web interface asks for a login the player asks for it too. The button is hidden when the box's address isn't known to this page — for a second box, only administrators see it.
+
+The **Stream details** under the picture show what your browser can do (secure page, WebCodecs, H.264 decoders); **Copy report** puts it on the clipboard as plain text to paste into a forum post.
 
 ### Radio
 <!-- help: radio -->
@@ -253,7 +258,7 @@ Your radio stations, with what's on now and next where the station sends program
 ### Timers
 <!-- help: timers -->
 
-All timers on the box, by day, with likely tuner conflicts marked. **Disable** keeps a timer in the list without recording; **Enable** turns it back on (with a conflict check first). **Delete** removes it — deleting a timer that is recording right now stops that recording, and the preview says so. **Clean up finished** removes every finished one-off timer in one preview (switched-off and repeating timers stay). **AutoTimer** records everything that matches its rules automatically; the page lists them, and **Show what would be recorded** previews what they would add. Each row has one action in sight (switch off/on, or delete when it can't be switched); the rest is under **⋯**.
+All timers on the box, by day, with likely tuner conflicts marked. **Disable** keeps a timer in the list without recording; **Enable** turns it back on (with a conflict check first). **Delete** removes it — deleting a timer that is recording right now stops that recording, and the preview says so. **Clean up finished** removes every finished one-off timer in one preview (switched-off and repeating timers stay). **AutoTimer** records everything that matches its rules automatically; the page lists them, and **Show what would be recorded** previews what they would add. Administrators also get **Open the AutoTimer editor**, the plugin's own page on the box (it changes every AutoTimer without asking DreamHub's permissions, so other profiles don't see it). Each row has one action in sight (switch off/on, or delete when it can't be switched); the rest is under **⋯**.
 
 ### Recommendations
 <!-- help: recommendations -->
@@ -397,9 +402,11 @@ Only you can do this — an assistant can never raise a rule to this stage, an a
 DreamHub can sit on your phone's home screen or your computer's desktop and open in its own window, without the browser's address bar. **Settings → General → DreamHub as an app** tells you what works in the browser you're using, with an **Install** button where the browser offers one.
 
 - **iPhone / iPad:** in Safari, tap **Share → Add to Home Screen**. This works over plain `http://`, no further setup.
-- **Android, Windows, Mac, Linux (Chrome, Edge):** browsers only offer to install over **HTTPS**, and DreamHub on the box is plain `http://` (no certificate a phone would trust can exist for a LAN address). Until it's behind HTTPS, use the browser menu's **Add to home screen**: that gives you an icon, just without the app window.
+- **Android, Windows, Mac, Linux (Chrome, Edge):** browsers only offer to install over **HTTPS**. Set up the box's **secure connection** (next paragraph); until then, use the browser menu's **Add to home screen**: that gives you an icon, just without the app window.
 
-**Putting DreamHub behind HTTPS** (optional) needs a second device that's always on and a name with a real certificate — for example:
+**The box's own secure connection (HTTPS).** DreamHub also listens on port **8766** with a certificate from the box's own certificate authority — the plain `http://<box-IP>:8765` keeps working. No public authority issues a certificate for a home address, so each device is told **once** to trust the box's certificate: **Settings → General → Secure connection** has the download, the certificate's fingerprint to compare, and the steps for iPhone/iPad, Android, Mac, Windows and Firefox (which keeps its own list). Afterwards open the secure address (`https://<box-IP>:8766`; for the browser it is a place of its own, so you pick your profile once more there and move your bookmark or installed app over) — HD live TV is then decoded by your device's hardware, installing the app and notifications work too. The setup assistant mentions it as an optional step. The certificate can vouch only for addresses at home (such as `192.168.…`) and names ending in `.local`, `.lan`, `.home.arpa` or `.fritz.box` — it is worthless for any website on the internet, so trusting it costs nothing there. If you open the box under a further name, list it in `DREAMHUB_TLS_NAMES` (comma-separated, in `/etc/default/dreamhub`); `DREAMHUB_TLS_ADDR=off` switches the port off, another value (`:9443`) moves it. The certificate is made when the box's clock is right and renewed on its own, also when the box's address changes. To start over (devices must then trust again), stop DreamHub, delete the folder `tls` in its data directory and start it again.
+
+**Putting DreamHub behind HTTPS with a name of your own** (optional, instead of the secure connection above) needs a second device that's always on and a name with a real certificate — for example:
 
 - **Tailscale:** on any always-on machine in your network, `tailscale serve --bg http://192.168.1.50:8765` gives `https://<machine>.<tailnet>.ts.net`, reachable from your devices at home and away.
 - **A reverse proxy** you already run (Caddy, Nginx Proxy Manager, Traefik on a NAS), with a domain that points to it, forwarding to `http://<box IP>:8765`.

@@ -2,7 +2,7 @@
 
 A web app and companion for your Dreambox: recordings, timers, the TV guide, internet channels (IPTV), series, an assistant — in the browser on your phone, tablet or computer, in your home network.
 
-**Current release: 0.13.0** — packages are attached to the [latest release](../../releases/latest). The manual is [MANUAL.md](MANUAL.md) (English) and [MANUAL.de.md](MANUAL.de.md) (Deutsch).
+**Current release: 0.13.1** — packages are attached to the [latest release](../../releases/latest). The manual is [MANUAL.md](MANUAL.md) (English) and [MANUAL.de.md](MANUAL.de.md) (Deutsch).
 
 ## What you need
 
@@ -21,7 +21,7 @@ apt-get update && apt-get install dreamhub
 
 (DM900 / DM920 UHD: `armhf` instead of `arm64` in the address.) `apt` fetches what is missing, e.g. `ffmpeg`. (The package adds this feed by itself the first time it is installed, so a box that got DreamHub by hand updates from it too.) Then open `http://<box IP>:8765` and follow the first-steps assistant. The feed is not signed (`[trusted=yes]`, like the other Dreambox plugin feeds), so add only this address.
 
-**Or by hand:** download `dreamhub_0.13.0_arm64.deb` (`armhf` for a DM900 / DM920 UHD) from the [latest release](../../releases/latest), copy it to the box and run `dpkg -i`; if `dpkg` complains about a missing package (DreamHub needs `ffmpeg`), `apt-get update && apt-get -f install` finishes it.
+**Or by hand:** download `dreamhub_0.13.1_arm64.deb` (`armhf` for a DM900 / DM920 UHD) from the [latest release](../../releases/latest), copy it to the box and run `dpkg -i`; if `dpkg` complains about a missing package (DreamHub needs `ffmpeg`), `apt-get update && apt-get -f install` finishes it.
 
 Installing never restarts enigma2: the TV launcher plugin loads at the next restart (`systemctl restart enigma2`) when it suits you; DreamHub itself works in the browser at once.
 
